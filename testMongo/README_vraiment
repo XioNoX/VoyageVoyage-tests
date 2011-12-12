@@ -1,0 +1,13 @@
+Deux fichiers ici :
+- simpleVoyages.js : sert à faire des requêtes que l'on peut vérifier facilement. On a 5 utilisateurs avec chacun quelques voyages. C'est histoire de se faire la main avec le systeme de requpêtage. Sur ce fichier n'hésitez pas à ajouter des voyages pour chaque personne.
+
+- heavyVoyages.js : fichier permettant de faire un peu de montée en charge pour pousser un peu la bête. Ici on génère un grand nombre d'utilisateurs pouvant avoir pas mal de voyages. Vous pouvez jouer avec le nombre de personnes histoire d'aller flirter avec le démon et peut être faire votre ordinateur s'approcher de la température du noyau du soleil ... vous me direz ;)
+
+ATTENTION : les deux fichiers travaillent sur la même base donc l'execution de l'un va effacer la base qu'avait créé l'autre. 
+
+Pour lancer le script (une fois que vous avez fait les configurations de mongodb telles que présentées sur le site bien sur) :
+
+vous démarrez mongodb : ./chemin/vers/bin/mongod
+puis vous lancez ./chemin/vers/bin/mongo chemin/vers/simpleVoyages.js
+
+Enjoy.
