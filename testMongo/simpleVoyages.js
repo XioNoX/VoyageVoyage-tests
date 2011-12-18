@@ -30,11 +30,29 @@ for(u in users) {
 	db.users.save(user);
 }
 
+db.system.js.save({ _id : "people_with_common_trips", value : function (_name){
+			//Sans toArray, ca retourne un curseur -> donc pas bon
+			var t = db.users.find({name: _name},{_id:false,trips:true}).toArray();
+			// Acces à l'attribut trips de l'objet retourné (à savoir les voyages de l'utilisateur passé en paramètre)
+			var array_trips = t[0].trips;
+			var results = [];
+			for(i=0;i<array_trips.length;i++){
+				var _city=array_trips[i].city;
+				var cursorUsers = db.users.find({name:{$ne : _name},trips:{$elemMatch:{city:_city}}}, {name:true, _id:false});
+				if(cursorUsers.count() > 0){
+					results.push(cursorUsers.toArray());
+				}
+			}
+			return results;
+		}
+	}
+	);
+
 
 
 //QUERIES
 print("people who travelled to Bruxelles : ");
-db.users.find({trips:{$elemMatch:{city:"Bruxelles"}}}, {name:true}).forEach(printjson);
+db.users.find({trips:{$elemMatch:{city:"Bruxelles"}}},{trips:false, _id:false}).forEach(printjson);
 
 print("people who travelled to San Francisco : ");
 db.users.find({trips:{$elemMatch:{city:"San-Francisco"}}}, {name:true}).forEach(printjson);
@@ -47,3 +65,9 @@ db.users.find({trips:{$elemMatch:{country:"Island"}}}, {name:true}).forEach(prin
 
 print("people who travelled to Autralia : ");
 db.users.find({trips:{$elemMatch:{city:"Sydney"}}}, {name:true}).forEach(printjson);
+
+
+
+print("People who had gone in the same cities as Jeremy");
+var test = db.eval("people_with_common_trips('Jeremy')");
+print(tojson(test));
