@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:fb="https://www.facebook.com/2008/fbml">
+    <head>
+      <title>My Facebook Login Page</title>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    </head>
+    <body>
+      <div id="fb-root"></div>
+      <script type="text/javascript">
+        window.fbAsyncInit = function() {
+          FB.init({
+            appId      : '181006455332013',
+            status     : true, 
+            cookie     : true,
+            xfbml      : true,
+            oauth      : true,
+          });
+	};
+	
+	(function(d){
+           var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
+           js = d.createElement('script'); js.id = id; js.async = true;
+           js.src = "//connect.facebook.net/en_US/all.js";
+           d.getElementsByTagName('head')[0].appendChild(js);
+         }(document));
+      
+	
+	// Function to get the token of the user
+	//https://developers.facebook.com/docs/reference/api/
+	$(function(){
+		$("#test").click( function() {
+			$("#contentAuthResponse").html('<p>Access token is :'+FB.getAuthResponse().accessToken+'</p>');
+			FB.api('/me', function(response) {
+				alert(response.id);
+				$("#userInformation").html('<p>User information :<br />Gender :'+response.gender +
+								'<br />Name :'+response.name +'('+response.username+')'+
+								'<br />Picture : '+'<img src="https://graph.facebook.com/'+response.username+'/picture"></img> </p>');
+			});
+			return false;
+		});
+	});
+	
+	</script>
+	<!--https://developers.facebook.com/docs/guides/web/#login - checker la partie concernant les permissions -->
+	<div class="fb-login-button">Login with Facebook</div>
+    	<button id='test'>Test</button>
+	<div id="contentAuthResponse"></div>
+	<div id="userInformation"></div>
+	</body>
+ </html>
